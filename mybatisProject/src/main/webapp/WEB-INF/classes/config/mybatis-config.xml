@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd"> 
+<!-- 이 세줄은 공식홈에서 복사해온다. 
+	해당 요소에 적법한 문법으로 작성되어있는지 확인해주는 dtd 설정임. -->
+<configuration>
+	<!-- *settings : mybatis 구동시 선언할 설정들을 작성하는 영역 -->
+	<settings>
+		<!-- null인데이터가 DB로 들어가려고 하면 오류가 나기때문에 DB에서의 NULL로 인식하도록 태그추가 -->
+		<setting name="jdbcTypeForNull" value="NULL" />
+	</settings>
+	
+	<!-- *typeAlias : VO(DTO라고도함) 클래스들의 풀클래스명 대신 부를 별칭 지정하는 영역  -->
+	<typeAliases> <!-- alias = 별칭 -->
+		<typeAlias type="com.br.mybatis.member.model.vo.Member" alias="Member" />
+		<typeAlias type="com.br.mybatis.board.model.vo.Board" alias="Board" />
+		<typeAlias type="com.br.mybatis.board.model.vo.Reply" alias="Reply" />
+	</typeAliases>
+	
+	<!-- *environment : mybatis에서 연동할 DB에 대한 정보를 기재 -->
+	<environments default="development">
+		<!-- environment 1개가 연결할 DB 1개를 지정한다. 테스트용과 실제가 다를 경우 여러개 등록하기도함. 때문에 아이디 필수 -->
+		<!-- 바깥 태그의 default 속성으로 여러개의 아이디 중 연결할 DB 지정 -->
+		<environment id="development">
+			<!-- 
+				*transactionManager 는 JDBC와 MANAGED 둘 중 하나 선택
+				- JDBC : 트랜잭션 처리를 내가 직접 관리하겠다. (성공여부 판단 후 수동 commit)
+				- MANAGED : 트랜잭션에 대해서 어떠한 영향도 행사하지 않겠다. (자동 commit)
+			 -->
+			<transactionManager type="JDBC" />
+			
+			<!-- 
+				*dataSource는 POOLED와 UNPOOLED 둘 중 하나를 선택 (ConnectionPool 사용할건지 여부를 결정)
+				>>ConnectionPool : Connection 객체를 담아둘 수 있는 영역
+				                  한번 생성된 객체를 담아두고 재사용 할 수 있다.
+			 -->
+			<dataSource type="POOLED">
+				<!-- db 연결할 값들 입력. 이때 키값(name)은 정해져있음. -->
+				<property name="driver" value="oracle.jdbc.driver.OracleDriver" /> <!-- ojdbc6 설치 되어있어야함. -->
+				<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe" />
+				<property name="username" value="mybatis" />
+				<property name="password" value="mybatis" />
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<!-- *mapper : 실행할 sql문들을 기록해둔 mapper 파일들을 등록하는 영역 -->
+	<mappers>
+		<mapper resource="/mappers/member-mapper.xml" />
+		<mapper resource="/mappers/board-mapper.xml" />
+		<mapper resource="/mappers/sample-mapper.xml" />
+	</mappers>
+
+</configuration>

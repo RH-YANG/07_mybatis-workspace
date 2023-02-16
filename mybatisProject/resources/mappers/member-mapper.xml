@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="memberMapper">
+	<!-- namespace : 해당 mapper파일만의 고유한 별칭 -->
+	
+	<!-- *resultMap : ResultSet으로부터 조회된 컬럼값을 뽑아서 -->
+	<resultMap id="memberResultSet" type="com.br.mybatis.member.model.vo.Member">
+		<result column="user_no" property="userNo" />
+		<result column="user_id" property="userId" />
+		<result column="user_pwd" property="userPwd" />
+		<result column="user_name" property="userName" />
+		<result column="email" property="email" />
+		<result column="birthday" property="birthday" />
+		<result column="gender" property="gender" />
+		<result column="phone" property="phone" />
+		<result column="address" property="address" />
+		<result column="enroll_date" property="enrollDate" />
+		<result column="modify_date" property="modifyDate" />
+		<result column="status" property="status" />
+	</resultMap>
+	
+	<insert id="insertMember" parameterType="com.br.mybatis.member.model.vo.Member">
+		insert
+		  into member
+		  (
+		  	user_no
+		  , user_id
+		  , user_pwd
+		  , user_name
+		  , email
+		  , birthday
+		  , gender
+		  , phone
+		  , address	
+		  )
+		  values
+		  (
+		    seq_uno.nextval
+		  , #{userId}
+		  , #{userPwd}
+		  , #{userName}
+		  , #{email}
+		  , #{birthday}
+		  , #{gender}
+		  , #{phone}
+		  , #{address}
+		  )
+	</insert>
+	<select id="loginMember" parameterType="Member"
+	        resultMap="memberResultSet">
+		select
+		       user_no
+		     , user_id
+		     , user_pwd
+		     , user_name
+		     , email
+		     , birthday
+		     , gender
+		     , phone
+		     , address
+		     , enroll_date
+		     , modify_date
+		     , status  
+		  from member
+		 where status = 'Y'
+		   and user_id = #{userId}
+		   and user_pwd = #{userPwd}
+	</select>
+	<update id="updateMember" parameterType="Member">
+		update member
+		   set user_pwd = #{userPwd}
+		     , user_name = #{userName}
+		     , email = #{email}
+		     , birthday = #{birthday}
+		     , gender = #{gender}
+		     , phone = #{phone}
+		     , address = #{address}
+		 where user_id = #{userId}
+	</update>
+
+</mapper>  

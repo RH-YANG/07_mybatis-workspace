@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sampleMapper">
+	<!-- 1. 1:1관계(has one)에서는 association사용해서 매핑한다 -->
+	<!-- 1-1) association 방법1 
+	<resultMap id="boardResultSet1" type="Board">
+		<id column="board_no" property="boardNo" />
+		<result column="board_title" property="boardTitle" />
+		<result column="board_content" property="boardContent" />
+		<result column="count" property="count" />
+		<association property="mem" javaType="Member">
+			<result column="user_id" property="userId" />
+			<result column="user_name" property="userName" />
+			<result column="gender" property="gender" />
+		</association>
+	</resultMap>-->
+	<!-- 1-2) association 방법2, 기존에 만들어둔 map이 있을경우 -->
+	<resultMap id="boardResultSet1" type="Board">
+		<id column="board_no" property="boardNo" />
+		<result column="board_title" property="boardTitle" />
+		<result column="board_content" property="boardContent" />
+		<result column="count" property="count" />
+		<association property="mem" resultMap="memberResultSet" />
+	</resultMap>
+	<resultMap id="memberResultSet" type="Member">
+		<result column="user_id" property="userId" />
+		<result column="user_name" property="userName" />
+		<result column="gender" property="gender" />
+	</resultMap>
+	
+	
+	<select id="boardHasOneMember" resultMap="boardResultSet1">
+		select
+		       board_no
+		     , board_title
+		     , board_content
+		     , count
+		     , user_id
+		     , user_name
+		     , gender
+		  from board
+		  join member on (board_writer=user_no)
+		 where board_no = 1	
+	</select>
+</mapper>
