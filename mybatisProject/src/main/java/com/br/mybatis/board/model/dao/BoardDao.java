@@ -58,4 +58,14 @@ public class BoardDao {
 	public Board boardHasOneMember(SqlSession sqlSession) {
 		return sqlSession.selectOne("sampleMapper.boardHasOneMember");
 	}
+	
+	public Board boardHasManyReply(SqlSession sqlSession) {
+		return sqlSession.selectOne("sampleMapper.boardHasManyReply");
+	}
+	
+	public ArrayList<Board> boardList(SqlSession sqlSession) {
+		return (ArrayList)sqlSession.selectList("sampleMapper.boardList");
+	}
+	
+	
 }

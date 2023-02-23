@@ -17,14 +17,14 @@ import com.br.mybatis.common.template.Template;
 /**
  * Servlet implementation class BoardHasOneMember
  */
-@WebServlet("/hasone.do")
-public class BoardHasOneMember extends HttpServlet {
+@WebServlet("/hasmany.do")
+public class BoardHasManyReply extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public BoardHasOneMember() {
+    public BoardHasManyReply() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,11 +34,11 @@ public class BoardHasOneMember extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		SqlSession sqlSession = Template.getSqlSession();
-		Board b = new BoardDao().boardHasOneMember(sqlSession);
+		Board b = new BoardDao().boardHasManyReply(sqlSession);
 		System.out.println("게시글정보 : "+b);
-		System.out.println("작성자정보 : "+b.getMem());
+		System.out.println("리플정보 : "+b.getReplyList());
 		request.setAttribute("b", b);
-		request.getRequestDispatcher("WEB-INF/views/board/boardHasOneMember.jsp").forward(request, response);
+		request.getRequestDispatcher("WEB-INF/views/board/boardHasManyReply.jsp").forward(request, response);
 		
 	}
 

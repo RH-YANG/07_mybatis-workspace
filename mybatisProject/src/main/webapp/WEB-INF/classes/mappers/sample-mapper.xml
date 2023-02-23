@@ -44,4 +44,56 @@
 		  join member on (board_writer=user_no)
 		 where board_no = 1	
 	</select>
+	
+	
+	<!-- 2. 1:n 관계에서는 collection 사용 -->
+	<!-- 2-1) collection 방법1 
+	<resultMap type="Board" id="boardResultSet2">
+		<id column="board_no" property="boardNo" />
+		<result column="board_title" property="boardTitle" />
+		<result column="board_content" property="boardContent" />
+		<collection property="replyList" ofType="Reply">
+			<id column="reply_no" property="replyNo" />
+			<result column="reply_content" property="replyContent" />
+			<result column="create_date" property="createDate" />
+		</collection>
+	</resultMap>-->
+	<!-- 2-2) collection 방법2 -->
+	<resultMap type="Board" id="boardResultSet2">
+		<id column="board_no" property="boardNo" />
+		<result column="board_title" property="boardTitle" />
+		<result column="board_content" property="boardContent" />
+		<collection property="replyList" resultMap="replyResultSet">
+		</collection>
+	</resultMap>
+	<resultMap type="Reply" id="replyResultSet">
+		<id column="reply_no" property="replyNo" />
+		<result column="reply_content" property="replyContent" />
+		<result column="create_date" property="createDate" />
+	</resultMap>
+	
+	<select id="boardHasManyReply" resultMap="boardResultSet2">
+		select
+		       board_no
+		     , board_title
+		     , board_content
+		     , reply_no
+		     , reply_content
+		     , r.create_date
+		  from board
+		  join reply r on (board_no=ref_bno)
+		 where board_no= 13	
+	</select>
+	<select id="boardList" resultMap="boardResultSet2">
+		select
+		       board_no
+		     , board_title
+		     , board_content
+		     , reply_no
+		     , reply_content
+		     , r.create_date
+		  from board
+		  left join reply r on (board_no=ref_bno)
+		 order by board_no desc	
+	</select>
 </mapper>

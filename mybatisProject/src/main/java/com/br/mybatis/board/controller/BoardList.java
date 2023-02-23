@@ -1,6 +1,7 @@
 package com.br.mybatis.board.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,16 +16,16 @@ import com.br.mybatis.board.model.vo.Board;
 import com.br.mybatis.common.template.Template;
 
 /**
- * Servlet implementation class BoardHasOneMember
+ * Servlet implementation class BoardList
  */
-@WebServlet("/hasone.do")
-public class BoardHasOneMember extends HttpServlet {
+@WebServlet("/list.sam")
+public class BoardList extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public BoardHasOneMember() {
+    public BoardList() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,12 +35,10 @@ public class BoardHasOneMember extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		SqlSession sqlSession = Template.getSqlSession();
-		Board b = new BoardDao().boardHasOneMember(sqlSession);
-		System.out.println("게시글정보 : "+b);
-		System.out.println("작성자정보 : "+b.getMem());
-		request.setAttribute("b", b);
-		request.getRequestDispatcher("WEB-INF/views/board/boardHasOneMember.jsp").forward(request, response);
+		ArrayList<Board> list = new BoardDao().boardList(sqlSession);
 		
+		request.setAttribute("list", list);
+		request.getRequestDispatcher("WEB-INF/views/board/boardList.jsp").forward(request, response);
 	}
 
 	/**
